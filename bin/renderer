@@ -1,0 +1,49 @@
+#!/bin/bash
+
+version="1.0.0"
+
+while [[ $# > 0 ]]
+do
+    key="$1"
+
+    case $key in
+        -h|--help)
+            echo "Just run renderer and enjoy rendered markup files inside Xcode."
+            exit
+        ;;
+        -v|--version)
+            echo "renderer v${version} - The only true way to toggle Xcode markdown rendering feature."
+            exit
+        ;;
+    esac
+    shift
+done
+
+
+XCODE_PROJECT=$(find . -name '*.xcodeproj' -maxdepth 1)
+
+if [[ -z "$XCODE_PROJECT" ]]; then
+    echo "No Xcode project file in the current directory!"
+    exit -1
+fi;
+
+FILE_NAME=".xcodesamplecode.plist"
+
+PLIST="
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<array/>
+</plist>
+"
+
+FULL_PATH="$XCODE_PROJECT/$FILE_NAME"
+
+if [ -f "$FULL_PATH" ]; then
+    rm "$FULL_PATH"
+    echo "Xcode markdown rendering turned off."
+else
+    echo $PLIST > "$FULL_PATH"
+    echo "Xcode markdown rendering turned on."
+fi;
+
