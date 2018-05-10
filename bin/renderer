@@ -19,8 +19,11 @@ do
     shift
 done
 
+XCODE_PROJECT=$(find . -name '*.xcworkspace' -maxdepth 1)
 
-XCODE_PROJECT=$(find . -name '*.xcodeproj' -maxdepth 1)
+if [[ -z "$XCODE_PROJECT" ]]; then
+    XCODE_PROJECT=$(find . -name '*.xcodeproj' -maxdepth 1)
+fi;
 
 if [[ -z "$XCODE_PROJECT" ]]; then
     echo "No Xcode project file in the current directory!"
@@ -46,4 +49,3 @@ else
     echo $PLIST > "$FULL_PATH"
     echo "Xcode markdown rendering turned on."
 fi;
-
